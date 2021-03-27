@@ -56,3 +56,6 @@ build/
 
 # clang cache
 .cache/
+
+# vim YouCompleteMe
+compile_commands.json
