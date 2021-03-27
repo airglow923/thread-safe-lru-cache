@@ -17,10 +17,10 @@ project(thread-safe-lru-cache
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED True)
 
-find_program(CLANG_TIDY_FOUND NAMES clang-tidy)
-if (CLANG_TIDY_FOUND)
-  set(CMAKE_C_CLANG_TIDY clang-tidy)
-endif()
+# find_program(CLANG_TIDY_FOUND NAMES clang-tidy)
+# if (CLANG_TIDY_FOUND)
+#   set(CMAKE_C_CLANG_TIDY clang-tidy)
+# endif()
 
 # vim YouCompleteMe
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -72,6 +72,10 @@ install(TARGETS ${PROJECT_NAME}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR}
     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+add_executable(main ${CMAKE_CURRENT_SOURCE_DIR}/src/main.c)
+
+target_link_libraries(main ${PROJECT_NAME})
 
 enable_testing()
 add_subdirectory(test)

@@ -1,5 +1,5 @@
 ---
-Checks: 'clang-diagnostic-*,clang-analyzer-*,readability-*,modernize-*,bugprone-*,misc-*,google-runtime-int,llvm-header-guard,readability-magic-numbers,-readability-magic-numbers,-readability-braces-around-statements,-clang-analyzer-core.CallAndMessage'
+Checks: 'clang-diagnostic-*,clang-analyzer-*,readability-*,bugprone-*,misc-*,google-runtime-int,llvm-header-guard,readability-magic-numbers,-readability-magic-numbers,-readability-braces-around-statements,-clang-analyzer-core.CallAndMessage'
 WarningsAsErrors:   '*'
 HeaderFilterRegex:  '.*'
 FormatStyle:        'file'
