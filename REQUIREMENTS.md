@@ -4,7 +4,7 @@
 
 ### Topic
 
-Implement a time based LRU Least Recently Used)( cache in C
+Implement a time based LRU (Least Recently Used) cache in C
 
 ### Description and Requirement
 
