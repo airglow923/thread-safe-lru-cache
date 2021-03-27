@@ -53,3 +53,6 @@ dkms.conf
 
 # CMake compiled files
 build/
+
+# clang cache
+.cache/
