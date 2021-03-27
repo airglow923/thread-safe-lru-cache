@@ -1,0 +1,3 @@
+set(INCLUDE_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/hyundeok/macro.h
+    PARENT_SCOPE)
