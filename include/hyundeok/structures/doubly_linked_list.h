@@ -25,7 +25,15 @@ typedef struct DoublyLinkedList {
 DoublyLinkedList* CreateDoublyLinkedList(void);
 
 /**
- * Checks if a doubly linked list is empty
+ * Returns the size of a doubly linked list.
+ *
+ * @param list Doubly linked list
+ * @return Size
+ */
+UllT DoublyLinkedListSize(DoublyLinkedList* list);
+
+/**
+ * Checks if a doubly linked list is empty.
  *
  * @param list Doubly linked list
  * @return Emptiness 1 if empty; 0 otherwise

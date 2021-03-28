@@ -43,7 +43,13 @@ DoublyLinkedList* CreateDoublyLinkedList(void) {
   return list;
 }
 
-int DoublyLinkedListIsEmpty(DoublyLinkedList* list) { return list->size_ == 0; }
+UllT DoublyLinkedListSize(DoublyLinkedList* list) {
+  return list->size_;
+}
+
+int DoublyLinkedListIsEmpty(DoublyLinkedList* list) {
+  return DoublyLinkedListSize(list) == 0;
+}
 
 UllT DoublyLinkedListFront(DoublyLinkedList* list) {
   return list->head_->data_;
