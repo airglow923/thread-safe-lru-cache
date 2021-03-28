@@ -32,11 +32,11 @@ if(EXISTS "${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json")
 endif()
 
 set(PROJECT_COMPILE_FLAGS
-		-Wall
-		-Wextra
-		-Wcast-align
-		-Wcast-qual
-		-Wdiv-by-zero)
+    -Wall
+    -Wextra
+    -Wcast-align
+    -Wcast-qual
+    -Wdiv-by-zero)
 
 set(INCLUDE_FILES)
 
