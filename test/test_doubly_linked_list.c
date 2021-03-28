@@ -229,18 +229,18 @@ static void test_DoublyLinkedListPushPop2(void** state) {
 
 int main(void) {
   const struct CMUnitTest tests[] = {
-    cmocka_unit_test(test_CreateDoublyLinkedListAndFree),
-    cmocka_unit_test(test_DoublyLinkedLisIsEmpty),
-    cmocka_unit_test(test_DoublyLinkedListPushFront),
-    cmocka_unit_test(test_DoublyLinkedListPushBack),
-    cmocka_unit_test(test_DoublyLinkedListPopFront_Empty),
-    cmocka_unit_test(test_DoublyLinkedListPopBack_Empty),
-    cmocka_unit_test(test_DoublyLinkedListPushFront_Connection),
-    cmocka_unit_test(test_DoublyLinkedListPushBack_Connection),
-    cmocka_unit_test(test_DoublyLinkedListPopFront),
-    cmocka_unit_test(test_DoublyLinkedListPopBack),
-    cmocka_unit_test(test_DoublyLinkedListPushPop1),
-    cmocka_unit_test(test_DoublyLinkedListPushPop2),
+      cmocka_unit_test(test_CreateDoublyLinkedListAndFree),
+      cmocka_unit_test(test_DoublyLinkedLisIsEmpty),
+      cmocka_unit_test(test_DoublyLinkedListPushFront),
+      cmocka_unit_test(test_DoublyLinkedListPushBack),
+      cmocka_unit_test(test_DoublyLinkedListPopFront_Empty),
+      cmocka_unit_test(test_DoublyLinkedListPopBack_Empty),
+      cmocka_unit_test(test_DoublyLinkedListPushFront_Connection),
+      cmocka_unit_test(test_DoublyLinkedListPushBack_Connection),
+      cmocka_unit_test(test_DoublyLinkedListPopFront),
+      cmocka_unit_test(test_DoublyLinkedListPopBack),
+      cmocka_unit_test(test_DoublyLinkedListPushPop1),
+      cmocka_unit_test(test_DoublyLinkedListPushPop2),
   };
 
   return cmocka_run_group_tests(tests, NULL, NULL);
