@@ -1,22 +1,30 @@
+include(FetchCMocka.cmake)
+
 set(TEST_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/main.c)
 
-add_executable(LRU-Cache-Test "")
+add_executable(LRU_Cache_Test "")
 
-target_sources(LRU-Cache-Test PRIVATE ${TEST_FILES})
+target_sources(LRU_Cache_Test PRIVATE ${TEST_FILES})
 
-target_link_libraries(LRU-Cache-Test PRIVATE ${PROJECT_NAME})
+target_compile_features(LRU_Cache_Test PRIVATE c_std_99)
 
-set_target_properties(LRU-Cache-Test PROPERTIES LINKER_LANGUAGE C)
+target_link_libraries(
+    LRU_Cache_Test
+        PRIVATE ${PROJECT_NAME}
+        PRIVATE cmocka-static)
+
+set_target_properties(LRU_Cache_Test PROPERTIES LINKER_LANGUAGE C)
 
 add_test(
     NAME
         CTestBuild
     COMMAND
-        "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target LRU-Cache-Test)
+        "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target LRU_Cache_Test
+)
 
-add_test(NAME CTestRun COMMAND LRU-Cache-Test)
+add_test(NAME CTestRun COMMAND LRU_Cache_Test)
 
 set_tests_properties(CTestRun PROPERTIES DEPENDS CTestBuild)
 
-add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} DEPENDS LRU-Cache-Test)
+add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} DEPENDS LRU_Cache_Test)
