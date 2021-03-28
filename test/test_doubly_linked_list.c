@@ -27,8 +27,11 @@ static void test_DoublyLinkedListPushFront(void** state) {
   DoublyLinkedList* list = CreateDoublyLinkedList();
 
   DoublyLinkedListPushFront(list, 1);
+  assert_int_equal(list->size_, 1);
   DoublyLinkedListPushFront(list, 2);
+  assert_int_equal(list->size_, 2);
   DoublyLinkedListPushFront(list, 3);
+  assert_int_equal(list->size_, 3);
 
   assert_false(DoublyLinkedListIsEmpty(list));
   assert_int_equal(DoublyLinkedListFront(list), 3);
@@ -40,8 +43,11 @@ static void test_DoublyLinkedListPushBack(void** state) {
   DoublyLinkedList* list = CreateDoublyLinkedList();
 
   DoublyLinkedListPushBack(list, 1);
+  assert_int_equal(list->size_, 1);
   DoublyLinkedListPushBack(list, 2);
+  assert_int_equal(list->size_, 2);
   DoublyLinkedListPushBack(list, 3);
+  assert_int_equal(list->size_, 3);
 
   assert_false(DoublyLinkedListIsEmpty(list));
   assert_int_equal(DoublyLinkedListBack(list), 3);
@@ -71,8 +77,11 @@ static void test_DoublyLinkedListPushFront_Connection(void** state) {
   DoublyLinkedList* list = CreateDoublyLinkedList();
 
   DoublyLinkedListPushFront(list, 1);
+  assert_int_equal(list->size_, 1);
   DoublyLinkedListPushFront(list, 2);
+  assert_int_equal(list->size_, 2);
   DoublyLinkedListPushFront(list, 3);
+  assert_int_equal(list->size_, 3);
 
   assert_false(DoublyLinkedListIsEmpty(list));
   assert_int_equal(DoublyLinkedListFront(list), 3);
@@ -94,8 +103,11 @@ static void test_DoublyLinkedListPushBack_Connection(void** state) {
   DoublyLinkedList* list = CreateDoublyLinkedList();
 
   DoublyLinkedListPushBack(list, 1);
+  assert_int_equal(list->size_, 1);
   DoublyLinkedListPushBack(list, 2);
+  assert_int_equal(list->size_, 2);
   DoublyLinkedListPushBack(list, 3);
+  assert_int_equal(list->size_, 3);
 
   assert_false(DoublyLinkedListIsEmpty(list));
   assert_int_equal(DoublyLinkedListBack(list), 3);
@@ -117,14 +129,20 @@ static void test_DoublyLinkedListPopFront(void** state) {
   DoublyLinkedList* list = CreateDoublyLinkedList();
 
   DoublyLinkedListPushFront(list, 1);
+  assert_int_equal(list->size_, 1);
   DoublyLinkedListPushFront(list, 2);
+  assert_int_equal(list->size_, 2);
   DoublyLinkedListPushFront(list, 3);
+  assert_int_equal(list->size_, 3);
 
   assert_false(DoublyLinkedListIsEmpty(list));
 
   DoublyLinkedListPopFront(list);
+  assert_int_equal(list->size_, 2);
   DoublyLinkedListPopFront(list);
+  assert_int_equal(list->size_, 1);
   DoublyLinkedListPopFront(list);
+  assert_int_equal(list->size_, 0);
 
   assert_true(DoublyLinkedListIsEmpty(list));
 
@@ -135,14 +153,20 @@ static void test_DoublyLinkedListPopBack(void** state) {
   DoublyLinkedList* list = CreateDoublyLinkedList();
 
   DoublyLinkedListPushBack(list, 1);
+  assert_int_equal(list->size_, 1);
   DoublyLinkedListPushBack(list, 2);
+  assert_int_equal(list->size_, 2);
   DoublyLinkedListPushBack(list, 3);
+  assert_int_equal(list->size_, 3);
 
   assert_false(DoublyLinkedListIsEmpty(list));
 
   DoublyLinkedListPopBack(list);
+  assert_int_equal(list->size_, 2);
   DoublyLinkedListPopBack(list);
+  assert_int_equal(list->size_, 1);
   DoublyLinkedListPopBack(list);
+  assert_int_equal(list->size_, 0);
 
   assert_true(DoublyLinkedListIsEmpty(list));
 
@@ -153,10 +177,15 @@ static void test_DoublyLinkedListPushPop1(void** state) {
   DoublyLinkedList* list = CreateDoublyLinkedList();
 
   DoublyLinkedListPushBack(list, 1);
+  assert_int_equal(list->size_, 1);
   DoublyLinkedListPopFront(list);
+  assert_int_equal(list->size_, 0);
   DoublyLinkedListPushBack(list, 2);
+  assert_int_equal(list->size_, 1);
   DoublyLinkedListPushBack(list, 3);
+  assert_int_equal(list->size_, 2);
   DoublyLinkedListPopBack(list);
+  assert_int_equal(list->size_, 1);
 
   assert_false(DoublyLinkedListIsEmpty(list));
 
@@ -164,6 +193,7 @@ static void test_DoublyLinkedListPushPop1(void** state) {
   assert_int_equal(DoublyLinkedListBack(list), 2);
 
   DoublyLinkedListPopFront(list);
+  assert_int_equal(list->size_, 0);
 
   assert_true(DoublyLinkedListIsEmpty(list));
 
@@ -174,10 +204,15 @@ static void test_DoublyLinkedListPushPop2(void** state) {
   DoublyLinkedList* list = CreateDoublyLinkedList();
 
   DoublyLinkedListPushFront(list, 1);
+  assert_int_equal(list->size_, 1);
   DoublyLinkedListPopBack(list);
+  assert_int_equal(list->size_, 0);
   DoublyLinkedListPushFront(list, 2);
+  assert_int_equal(list->size_, 1);
   DoublyLinkedListPushFront(list, 3);
+  assert_int_equal(list->size_, 2);
   DoublyLinkedListPopFront(list);
+  assert_int_equal(list->size_, 1);
 
   assert_false(DoublyLinkedListIsEmpty(list));
 
@@ -185,6 +220,7 @@ static void test_DoublyLinkedListPushPop2(void** state) {
   assert_int_equal(DoublyLinkedListBack(list), 2);
 
   DoublyLinkedListPopBack(list);
+  assert_int_equal(list->size_, 0);
 
   assert_true(DoublyLinkedListIsEmpty(list));
 
