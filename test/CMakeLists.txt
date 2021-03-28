@@ -1,7 +1,7 @@
 include(FetchCMocka.cmake)
 
 set(TEST_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/main.c)
+    ${CMAKE_CURRENT_SOURCE_DIR}/test_doubly_linked_list.c)
 
 add_executable(LRU_Cache_Test "")
 
