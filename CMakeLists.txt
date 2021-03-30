@@ -35,6 +35,7 @@ if(EXISTS "${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json")
 endif()
 
 set(PROJECT_COMPILE_FLAGS
+    # -fsanitize=leak
     -fsanitize=thread
     -fPIC
     -g
@@ -44,8 +45,14 @@ set(PROJECT_COMPILE_FLAGS
     -Wcast-qual
     -Wdiv-by-zero)
 
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=thread")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fsanitize=thread")
+set(CMAKE_EXE_LINKER_FLAGS
+    ${CMAKE_EXE_LINKER_FLAGS}
+    # -fsanitize=leak
+    -fsanitize=thread)
+set(CMAKE_SHARED_LINKER_FLAGS
+    ${CMAKE_SHARED_LINKER_FLAGS}
+    # -fsanitize=leak
+    -fsanitize=thread)
 
 add_library(${PROJECT_NAME} SHARED)
 

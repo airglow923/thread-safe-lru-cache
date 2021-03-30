@@ -6,13 +6,14 @@
 // this is used for internal implementation
 // it should not be accessed by end users
 typedef struct DoublyLinkedListNode {
-  UllT data_;
+  void* data_;
   struct DoublyLinkedListNode* prev_;
   struct DoublyLinkedListNode* next_;
 } DllnT;
 
 typedef struct DoublyLinkedList {
-  UllT size_;
+  size_t size_;
+  size_t type_size_;
   DllnT* head_;
   DllnT* tail_;
 } DoublyLinkedList;
@@ -22,7 +23,7 @@ typedef struct DoublyLinkedList {
  *
  * @return List Doubly linked list
  */
-DoublyLinkedList* DoublyLinkedListNew(void);
+DoublyLinkedList* DoublyLinkedListNew(size_t type_size);
 
 /**
  * Returns the size of a doubly linked list.
@@ -30,7 +31,7 @@ DoublyLinkedList* DoublyLinkedListNew(void);
  * @param list Doubly linked list
  * @return Size
  */
-UllT DoublyLinkedListSize(DoublyLinkedList* list);
+size_t DoublyLinkedListSize(DoublyLinkedList* list);
 
 /**
  * Checks if a doubly linked list is empty.
@@ -48,7 +49,7 @@ int DoublyLinkedListIsEmpty(DoublyLinkedList* list);
  * @param list Doubly linked list
  * @return Data at the head
  */
-UllT DoublyLinkedListFront(DoublyLinkedList* list);
+void* DoublyLinkedListFront(DoublyLinkedList* list);
 
 /**
  * Returns data at the tail of a doubly linked list.
@@ -58,25 +59,25 @@ UllT DoublyLinkedListFront(DoublyLinkedList* list);
  * @param list Doubly linked list
  * @return Data at the head
  */
-UllT DoublyLinkedListBack(DoublyLinkedList* list);
+void* DoublyLinkedListBack(DoublyLinkedList* list);
 
 /**
  * Inserts an element to the head of a doubly linked list.
  *
  * @param list Doubly linked list
- * @param data Integer data
+ * @param data Data to be inserted
  * @return 0 if success; otherwise, -1
  */
-int DoublyLinkedListPushFront(DoublyLinkedList* list, UllT data);
+int DoublyLinkedListPushFront(DoublyLinkedList* list, void* data);
 
 /**
  * Inserts an element to the tail of a doubly linked list.
  *
  * @param list Doubly linked list
- * @param data Integer data
+ * @param data Data to be inserted
  * @return 0 if success; otherwise, -1
  */
-int DoublyLinkedListPushBack(DoublyLinkedList* list, UllT data);
+int DoublyLinkedListPushBack(DoublyLinkedList* list, void* data);
 
 /**
  * Deletes an element at the head of a doubly linked list.

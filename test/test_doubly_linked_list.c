@@ -5,134 +5,146 @@
 #include <setjmp.h>
 #include "cmocka.h"
 
-static void test_CreateDoublyLinkedListAndFree(void** state) {
-  DoublyLinkedList* list = CreateDoublyLinkedList();
+#include <stdlib.h>
+
+static int* CreateIntData(int data) {
+  int* ptr = malloc(sizeof(int));
+  *ptr = data;
+  return ptr;
+}
+
+static int CastVoidPtrToInt(void* vptr) {
+  return *(int*) vptr;
+}
+
+static void test_DoublyLinkedListNewAndFree(void** state) {
+  DoublyLinkedList* list = DoublyLinkedListNew(sizeof(int));
 
   assert_int_equal(DoublyLinkedListSize(list), 0);
   assert_null(list->head_);
   assert_null(list->tail_);
 
-  RemoveDoublyLinkedList(list);
+  DoublyLinkedListDestroy(list);
 }
 
 static void test_DoublyLinkedLisIsEmpty(void** state) {
-  DoublyLinkedList* list = CreateDoublyLinkedList();
+  DoublyLinkedList* list = DoublyLinkedListNew(sizeof(int));
 
   assert_true(DoublyLinkedListIsEmpty(list));
 
-  RemoveDoublyLinkedList(list);
+  DoublyLinkedListDestroy(list);
 }
 
 static void test_DoublyLinkedListPushFront(void** state) {
-  DoublyLinkedList* list = CreateDoublyLinkedList();
+  DoublyLinkedList* list = DoublyLinkedListNew(sizeof(int));
 
-  DoublyLinkedListPushFront(list, 1);
+  DoublyLinkedListPushFront(list, CreateIntData(1));
   assert_int_equal(DoublyLinkedListSize(list), 1);
-  DoublyLinkedListPushFront(list, 2);
+  DoublyLinkedListPushFront(list, CreateIntData(2));
   assert_int_equal(DoublyLinkedListSize(list), 2);
-  DoublyLinkedListPushFront(list, 3);
+  DoublyLinkedListPushFront(list, CreateIntData(3));
   assert_int_equal(DoublyLinkedListSize(list), 3);
 
   assert_false(DoublyLinkedListIsEmpty(list));
-  assert_int_equal(DoublyLinkedListFront(list), 3);
+  assert_int_equal(CastVoidPtrToInt(DoublyLinkedListFront(list)), 3);
 
-  RemoveDoublyLinkedList(list);
+  DoublyLinkedListDestroy(list);
 }
 
 static void test_DoublyLinkedListPushBack(void** state) {
-  DoublyLinkedList* list = CreateDoublyLinkedList();
+  DoublyLinkedList* list = DoublyLinkedListNew(sizeof(int));
 
-  DoublyLinkedListPushBack(list, 1);
+  DoublyLinkedListPushBack(list, CreateIntData(1));
   assert_int_equal(DoublyLinkedListSize(list), 1);
-  DoublyLinkedListPushBack(list, 2);
+  DoublyLinkedListPushBack(list, CreateIntData(2));
   assert_int_equal(DoublyLinkedListSize(list), 2);
-  DoublyLinkedListPushBack(list, 3);
+  DoublyLinkedListPushBack(list, CreateIntData(3));
   assert_int_equal(DoublyLinkedListSize(list), 3);
 
   assert_false(DoublyLinkedListIsEmpty(list));
-  assert_int_equal(DoublyLinkedListBack(list), 3);
+  assert_int_equal(CastVoidPtrToInt(DoublyLinkedListBack(list)), 3);
 
-  RemoveDoublyLinkedList(list);
+  DoublyLinkedListDestroy(list);
 }
 
 static void test_DoublyLinkedListPopFront_Empty(void** state) {
-  DoublyLinkedList* list = CreateDoublyLinkedList();
+  DoublyLinkedList* list = DoublyLinkedListNew(sizeof(int));
 
   assert_true(DoublyLinkedListIsEmpty(list));
   DoublyLinkedListPopFront(list);
 
-  RemoveDoublyLinkedList(list);
+  DoublyLinkedListDestroy(list);
 }
 
 static void test_DoublyLinkedListPopBack_Empty(void** state) {
-  DoublyLinkedList* list = CreateDoublyLinkedList();
+  DoublyLinkedList* list = DoublyLinkedListNew(sizeof(int));
 
   assert_true(DoublyLinkedListIsEmpty(list));
   DoublyLinkedListPopFront(list);
 
-  RemoveDoublyLinkedList(list);
+  DoublyLinkedListDestroy(list);
 }
 
 static void test_DoublyLinkedListPushFront_Connection(void** state) {
-  DoublyLinkedList* list = CreateDoublyLinkedList();
+  DoublyLinkedList* list = DoublyLinkedListNew(sizeof(int));
 
-  DoublyLinkedListPushFront(list, 1);
+  DoublyLinkedListPushFront(list, CreateIntData(1));
   assert_int_equal(DoublyLinkedListSize(list), 1);
-  DoublyLinkedListPushFront(list, 2);
+  DoublyLinkedListPushFront(list, CreateIntData(2));
   assert_int_equal(DoublyLinkedListSize(list), 2);
-  DoublyLinkedListPushFront(list, 3);
+  DoublyLinkedListPushFront(list, CreateIntData(3));
   assert_int_equal(DoublyLinkedListSize(list), 3);
 
   assert_false(DoublyLinkedListIsEmpty(list));
-  assert_int_equal(DoublyLinkedListFront(list), 3);
-  assert_int_equal(DoublyLinkedListBack(list), 1);
+  assert_int_equal(CastVoidPtrToInt(DoublyLinkedListFront(list)), 3);
+  assert_int_equal(CastVoidPtrToInt(DoublyLinkedListBack(list)), 1);
 
   assert_null(list->head_->prev_);
-  assert_int_equal(list->head_->data_, 3);
-  assert_int_equal(list->head_->next_->data_, 2);
-  assert_int_equal(list->head_->next_->next_->data_, 1);
+  assert_int_equal(CastVoidPtrToInt(list->head_->data_), 3);
+  assert_int_equal(CastVoidPtrToInt(list->head_->next_->data_), 2);
+  assert_int_equal(CastVoidPtrToInt(list->head_->next_->next_->data_), 1);
   assert_null(list->head_->next_->next_->next_);
 
   assert_ptr_equal(list->head_, list->head_->next_->prev_);
   assert_ptr_equal(list->head_->next_, list->head_->next_->next_->prev_);
 
-  RemoveDoublyLinkedList(list);
+  DoublyLinkedListDestroy(list);
 }
 
 static void test_DoublyLinkedListPushBack_Connection(void** state) {
-  DoublyLinkedList* list = CreateDoublyLinkedList();
+  DoublyLinkedList* list = DoublyLinkedListNew(sizeof(int));
 
-  DoublyLinkedListPushBack(list, 1);
+  DoublyLinkedListPushBack(list, CreateIntData(1));
   assert_int_equal(DoublyLinkedListSize(list), 1);
-  DoublyLinkedListPushBack(list, 2);
+  DoublyLinkedListPushBack(list, CreateIntData(2));
   assert_int_equal(DoublyLinkedListSize(list), 2);
-  DoublyLinkedListPushBack(list, 3);
+  DoublyLinkedListPushBack(list, CreateIntData(3));
   assert_int_equal(DoublyLinkedListSize(list), 3);
 
   assert_false(DoublyLinkedListIsEmpty(list));
-  assert_int_equal(DoublyLinkedListBack(list), 3);
-  assert_int_equal(DoublyLinkedListFront(list), 1);
+  assert_int_equal(CastVoidPtrToInt(DoublyLinkedListBack(list)), 3);
+  assert_int_equal(CastVoidPtrToInt(DoublyLinkedListFront(list)), 1);
 
   assert_null(list->tail_->next_);
-  assert_int_equal(list->tail_->data_, 3);
-  assert_int_equal(list->tail_->prev_->data_, 2);
-  assert_int_equal(list->tail_->prev_->prev_->data_, 1);
+  assert_int_equal(CastVoidPtrToInt(list->tail_->data_), 3);
+  assert_int_equal(CastVoidPtrToInt(list->tail_->prev_->data_), 2);
+  assert_int_equal(CastVoidPtrToInt(list->tail_->prev_->prev_->data_), 1);
   assert_null(list->tail_->prev_->prev_->prev_);
 
   assert_ptr_equal(list->tail_, list->tail_->prev_->next_);
   assert_ptr_equal(list->tail_->prev_, list->tail_->prev_->prev_->next_);
 
-  RemoveDoublyLinkedList(list);
+  DoublyLinkedListDestroy(list);
 }
 
 static void test_DoublyLinkedListPopFront(void** state) {
-  DoublyLinkedList* list = CreateDoublyLinkedList();
+  DoublyLinkedList* list = DoublyLinkedListNew(sizeof(int));
 
-  DoublyLinkedListPushFront(list, 1);
+  DoublyLinkedListPushFront(list, CreateIntData(1));
   assert_int_equal(DoublyLinkedListSize(list), 1);
-  DoublyLinkedListPushFront(list, 2);
+  DoublyLinkedListPushFront(list, CreateIntData(2));
   assert_int_equal(DoublyLinkedListSize(list), 2);
-  DoublyLinkedListPushFront(list, 3);
+  DoublyLinkedListPushFront(list, CreateIntData(3));
   assert_int_equal(DoublyLinkedListSize(list), 3);
 
   assert_false(DoublyLinkedListIsEmpty(list));
@@ -146,17 +158,17 @@ static void test_DoublyLinkedListPopFront(void** state) {
 
   assert_true(DoublyLinkedListIsEmpty(list));
 
-  RemoveDoublyLinkedList(list);
+  DoublyLinkedListDestroy(list);
 }
 
 static void test_DoublyLinkedListPopBack(void** state) {
-  DoublyLinkedList* list = CreateDoublyLinkedList();
+  DoublyLinkedList* list = DoublyLinkedListNew(sizeof(int));
 
-  DoublyLinkedListPushBack(list, 1);
+  DoublyLinkedListPushBack(list, CreateIntData(1));
   assert_int_equal(DoublyLinkedListSize(list), 1);
-  DoublyLinkedListPushBack(list, 2);
+  DoublyLinkedListPushBack(list, CreateIntData(2));
   assert_int_equal(DoublyLinkedListSize(list), 2);
-  DoublyLinkedListPushBack(list, 3);
+  DoublyLinkedListPushBack(list, CreateIntData(3));
   assert_int_equal(DoublyLinkedListSize(list), 3);
 
   assert_false(DoublyLinkedListIsEmpty(list));
@@ -170,66 +182,66 @@ static void test_DoublyLinkedListPopBack(void** state) {
 
   assert_true(DoublyLinkedListIsEmpty(list));
 
-  RemoveDoublyLinkedList(list);
+  DoublyLinkedListDestroy(list);
 }
 
 static void test_DoublyLinkedListPushPop1(void** state) {
-  DoublyLinkedList* list = CreateDoublyLinkedList();
+  DoublyLinkedList* list = DoublyLinkedListNew(sizeof(int));
 
-  DoublyLinkedListPushBack(list, 1);
+  DoublyLinkedListPushBack(list, CreateIntData(1));
   assert_int_equal(DoublyLinkedListSize(list), 1);
   DoublyLinkedListPopFront(list);
   assert_int_equal(DoublyLinkedListSize(list), 0);
-  DoublyLinkedListPushBack(list, 2);
+  DoublyLinkedListPushBack(list, CreateIntData(2));
   assert_int_equal(DoublyLinkedListSize(list), 1);
-  DoublyLinkedListPushBack(list, 3);
+  DoublyLinkedListPushBack(list, CreateIntData(3));
   assert_int_equal(DoublyLinkedListSize(list), 2);
   DoublyLinkedListPopBack(list);
   assert_int_equal(DoublyLinkedListSize(list), 1);
 
   assert_false(DoublyLinkedListIsEmpty(list));
 
-  assert_int_equal(DoublyLinkedListFront(list), 2);
-  assert_int_equal(DoublyLinkedListBack(list), 2);
+  assert_int_equal(CastVoidPtrToInt(DoublyLinkedListFront(list)), 2);
+  assert_int_equal(CastVoidPtrToInt(DoublyLinkedListBack(list)), 2);
 
   DoublyLinkedListPopFront(list);
   assert_int_equal(DoublyLinkedListSize(list), 0);
 
   assert_true(DoublyLinkedListIsEmpty(list));
 
-  RemoveDoublyLinkedList(list);
+  DoublyLinkedListDestroy(list);
 }
 
 static void test_DoublyLinkedListPushPop2(void** state) {
-  DoublyLinkedList* list = CreateDoublyLinkedList();
+  DoublyLinkedList* list = DoublyLinkedListNew(sizeof(int));
 
-  DoublyLinkedListPushFront(list, 1);
+  DoublyLinkedListPushFront(list, CreateIntData(1));
   assert_int_equal(DoublyLinkedListSize(list), 1);
   DoublyLinkedListPopBack(list);
   assert_int_equal(DoublyLinkedListSize(list), 0);
-  DoublyLinkedListPushFront(list, 2);
+  DoublyLinkedListPushFront(list, CreateIntData(2));
   assert_int_equal(DoublyLinkedListSize(list), 1);
-  DoublyLinkedListPushFront(list, 3);
+  DoublyLinkedListPushFront(list, CreateIntData(3));
   assert_int_equal(DoublyLinkedListSize(list), 2);
   DoublyLinkedListPopFront(list);
   assert_int_equal(DoublyLinkedListSize(list), 1);
 
   assert_false(DoublyLinkedListIsEmpty(list));
 
-  assert_int_equal(DoublyLinkedListFront(list), 2);
-  assert_int_equal(DoublyLinkedListBack(list), 2);
+  assert_int_equal(CastVoidPtrToInt(DoublyLinkedListFront(list)), 2);
+  assert_int_equal(CastVoidPtrToInt(DoublyLinkedListBack(list)), 2);
 
   DoublyLinkedListPopBack(list);
   assert_int_equal(DoublyLinkedListSize(list), 0);
 
   assert_true(DoublyLinkedListIsEmpty(list));
 
-  RemoveDoublyLinkedList(list);
+  DoublyLinkedListDestroy(list);
 }
 
 int main(void) {
   const struct CMUnitTest tests[] = {
-      cmocka_unit_test(test_CreateDoublyLinkedListAndFree),
+      cmocka_unit_test(test_DoublyLinkedListNewAndFree),
       cmocka_unit_test(test_DoublyLinkedLisIsEmpty),
       cmocka_unit_test(test_DoublyLinkedListPushFront),
       cmocka_unit_test(test_DoublyLinkedListPushBack),
