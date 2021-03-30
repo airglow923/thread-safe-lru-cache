@@ -133,7 +133,7 @@ void DoublyLinkedListPopBack(DoublyLinkedList* list) {
   --list->size_;
 }
 
-void DoublyLinkedListFree(DoublyLinkedList* list) {
+void RemoveDoublyLinkedList(DoublyLinkedList* list) {
   for (DllnT* head = list->head_; head;) {
     DllnT* next = head->next_;
     free(head);

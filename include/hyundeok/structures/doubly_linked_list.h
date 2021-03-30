@@ -97,6 +97,6 @@ void DoublyLinkedListPopBack(DoublyLinkedList* list);
  *
  * @param list Doubly linked list
  */
-void DoublyLinkedListFree(DoublyLinkedList* list);
+void RemoveDoublyLinkedList(DoublyLinkedList* list);
 
 #endif
