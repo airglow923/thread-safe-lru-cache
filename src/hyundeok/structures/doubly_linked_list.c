@@ -34,14 +34,13 @@ static void FreeLastElement(DoublyLinkedList* list) {
   --list->size_;
 }
 
-DoublyLinkedList* DoublyLinkedListNew(size_t type_size) {
+DoublyLinkedList* DoublyLinkedListNew() {
   DoublyLinkedList* list = malloc(sizeof(DoublyLinkedList));
 
   // check whether list is NULL or not; return NULL if NULL
   HYUNDEOK_MEMORY_ASSERT(list, NULL);
 
   list->size_ = 0;
-  list->type_size_ = type_size;
   list->head_ = NULL;
   list->tail_ = NULL;
 

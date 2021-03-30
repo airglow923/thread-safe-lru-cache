@@ -13,7 +13,6 @@ typedef struct DoublyLinkedListNode {
 
 typedef struct DoublyLinkedList {
   size_t size_;
-  size_t type_size_;
   DllnT* head_;
   DllnT* tail_;
 } DoublyLinkedList;
@@ -23,7 +22,7 @@ typedef struct DoublyLinkedList {
  *
  * @return List Doubly linked list
  */
-DoublyLinkedList* DoublyLinkedListNew(size_t type_size);
+DoublyLinkedList* DoublyLinkedListNew();
 
 /**
  * Returns the size of a doubly linked list.
