@@ -20,6 +20,10 @@ set(CMAKE_C_STANDARD_REQUIRED True)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(deps REQUIRED IMPORTED_TARGET glib-2.0)
 
+if (NOT UNIX)
+  message(FATAL_ERROR "Only Unix is allowed to compile the source.")
+endif()
+
 # find_program(CLANG_TIDY_FOUND NAMES clang-tidy)
 # if (CLANG_TIDY_FOUND)
 #   set(CMAKE_C_CLANG_TIDY clang-tidy)
