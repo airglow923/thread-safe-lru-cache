@@ -17,6 +17,9 @@ project(thread-safe-lru-cache
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED True)
 
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(deps REQUIRED IMPORTED_TARGET glib-2.0)
+
 # find_program(CLANG_TIDY_FOUND NAMES clang-tidy)
 # if (CLANG_TIDY_FOUND)
 #   set(CMAKE_C_CLANG_TIDY clang-tidy)
@@ -32,15 +35,17 @@ if(EXISTS "${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json")
 endif()
 
 set(PROJECT_COMPILE_FLAGS
+    -fsanitize=thread
+    -fPIC
+    -g
     -Wall
     -Wextra
     -Wcast-align
     -Wcast-qual
     -Wdiv-by-zero)
 
-set(INCLUDE_FILES)
-
-set(SOURCE_FILES)
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=thread")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fsanitize=thread")
 
 add_library(${PROJECT_NAME} SHARED)
 
@@ -55,6 +60,7 @@ target_include_directories(${PROJECT_NAME}
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     PRIVATE
+        ${GLIB_INCLUDE_DIRS}
         src)
 
 target_sources(${PROJECT_NAME}
@@ -75,7 +81,7 @@ install(TARGETS ${PROJECT_NAME}
 
 add_executable(main ${CMAKE_CURRENT_SOURCE_DIR}/src/main.c)
 
-target_link_libraries(main ${PROJECT_NAME})
+target_link_libraries(main ${PROJECT_NAME} PkgConfig::deps)
 
 enable_testing()
 add_subdirectory(test)
