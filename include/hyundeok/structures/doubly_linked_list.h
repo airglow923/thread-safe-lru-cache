@@ -22,7 +22,7 @@ typedef struct DoublyLinkedList {
  *
  * @return List Doubly linked list
  */
-DoublyLinkedList* CreateDoublyLinkedList(void);
+DoublyLinkedList* DoublyLinkedListNew(void);
 
 /**
  * Returns the size of a doubly linked list.
@@ -97,6 +97,6 @@ void DoublyLinkedListPopBack(DoublyLinkedList* list);
  *
  * @param list Doubly linked list
  */
-void RemoveDoublyLinkedList(DoublyLinkedList* list);
+void DoublyLinkedListDestroy(DoublyLinkedList* list);
 
 #endif

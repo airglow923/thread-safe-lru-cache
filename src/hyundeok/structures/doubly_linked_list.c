@@ -30,7 +30,7 @@ static void FreeLastElement(DoublyLinkedList* list) {
   --list->size_;
 }
 
-DoublyLinkedList* CreateDoublyLinkedList(void) {
+DoublyLinkedList* DoublyLinkedListNew(void) {
   DoublyLinkedList* list = malloc(sizeof(DoublyLinkedList));
 
   // check whether list is NULL or not; return NULL if NULL
@@ -133,7 +133,7 @@ void DoublyLinkedListPopBack(DoublyLinkedList* list) {
   --list->size_;
 }
 
-void RemoveDoublyLinkedList(DoublyLinkedList* list) {
+void DoublyLinkedListDestroy(DoublyLinkedList* list) {
   for (DllnT* head = list->head_; head;) {
     DllnT* next = head->next_;
     free(head);
