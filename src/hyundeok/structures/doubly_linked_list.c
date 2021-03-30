@@ -3,7 +3,8 @@
 
 #include <stdlib.h> // malloc, free
 
-static DllnT* CreateDoublyLinkedListNode(void* data) {
+static DllnT*
+CreateDoublyLinkedListNode(void* data) {
   DllnT* new_node = malloc(sizeof(DllnT));
 
   // check whether new_node is NULL or not; return NULL if NULL
@@ -16,25 +17,29 @@ static DllnT* CreateDoublyLinkedListNode(void* data) {
   return new_node;
 }
 
-static void InitialiseHeadAndTail(DoublyLinkedList* list, DllnT* new_node) {
+static void
+InitialiseHeadAndTail(DoublyLinkedList* list, DllnT* new_node) {
   list->head_ = new_node;
   list->tail_ = new_node;
   ++list->size_;
 }
 
-static void FreeDoublyLinkedListNode(DllnT* node) {
+static void
+FreeDoublyLinkedListNode(DllnT* node) {
   free(node->data_);
   free(node);
 }
 
-static void FreeLastElement(DoublyLinkedList* list) {
+static void
+FreeLastElement(DoublyLinkedList* list) {
   FreeDoublyLinkedListNode(list->head_);
   list->head_ = NULL;
   list->tail_ = NULL;
   --list->size_;
 }
 
-DoublyLinkedList* DoublyLinkedListNew() {
+DoublyLinkedList*
+DoublyLinkedListNew() {
   DoublyLinkedList* list = malloc(sizeof(DoublyLinkedList));
 
   // check whether list is NULL or not; return NULL if NULL
@@ -47,21 +52,28 @@ DoublyLinkedList* DoublyLinkedListNew() {
   return list;
 }
 
-size_t DoublyLinkedListSize(DoublyLinkedList* list) { return list->size_; }
+size_t
+DoublyLinkedListSize(DoublyLinkedList* list) {
+  return list->size_;
+}
 
-int DoublyLinkedListIsEmpty(DoublyLinkedList* list) {
+int
+DoublyLinkedListIsEmpty(DoublyLinkedList* list) {
   return DoublyLinkedListSize(list) == 0;
 }
 
-void* DoublyLinkedListFront(DoublyLinkedList* list) {
+void*
+DoublyLinkedListFront(DoublyLinkedList* list) {
   return list->head_->data_;
 }
 
-void* DoublyLinkedListBack(DoublyLinkedList* list) {
+void*
+DoublyLinkedListBack(DoublyLinkedList* list) {
   return list->tail_->data_;
 }
 
-int DoublyLinkedListPushFront(DoublyLinkedList* list, void* data) {
+int
+DoublyLinkedListPushFront(DoublyLinkedList* list, void* data) {
   DllnT* new_node = CreateDoublyLinkedListNode(data);
 
   // check whether new_node is NULL or not; return -1 if NULL
@@ -81,7 +93,8 @@ int DoublyLinkedListPushFront(DoublyLinkedList* list, void* data) {
   return 0;
 }
 
-int DoublyLinkedListPushBack(DoublyLinkedList* list, void* data) {
+int
+DoublyLinkedListPushBack(DoublyLinkedList* list, void* data) {
   DllnT* new_node = CreateDoublyLinkedListNode(data);
 
   // check whether new_node is NULL or not; return -1 if NULL
@@ -101,7 +114,8 @@ int DoublyLinkedListPushBack(DoublyLinkedList* list, void* data) {
   return 0;
 }
 
-void DoublyLinkedListPopFront(DoublyLinkedList* list) {
+void
+DoublyLinkedListPopFront(DoublyLinkedList* list) {
   if (DoublyLinkedListIsEmpty(list))
     return;
 
@@ -119,7 +133,8 @@ void DoublyLinkedListPopFront(DoublyLinkedList* list) {
   --list->size_;
 }
 
-void DoublyLinkedListPopBack(DoublyLinkedList* list) {
+void
+DoublyLinkedListPopBack(DoublyLinkedList* list) {
   if (DoublyLinkedListIsEmpty(list))
     return;
 
@@ -137,7 +152,8 @@ void DoublyLinkedListPopBack(DoublyLinkedList* list) {
   --list->size_;
 }
 
-void DoublyLinkedListDestroy(DoublyLinkedList* list) {
+void
+DoublyLinkedListDestroy(DoublyLinkedList* list) {
   for (DllnT* head = list->head_; head;) {
     DllnT* next = head->next_;
     FreeDoublyLinkedListNode(head);

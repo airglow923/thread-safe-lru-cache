@@ -1,4 +1,3 @@
----
 Language:        Cpp
 # BasedOnStyle:  LLVM
 AccessModifierOffset: -2
@@ -20,8 +19,8 @@ AllowShortFunctionsOnASingleLine: All
 AllowShortLambdasOnASingleLine: All
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLoopsOnASingleLine: false
-AlwaysBreakAfterDefinitionReturnType: None
-AlwaysBreakAfterReturnType: None
+# AlwaysBreakAfterDefinitionReturnType: None
+AlwaysBreakAfterReturnType: All
 AlwaysBreakBeforeMultilineStrings: false
 # AlwaysBreakTemplateDeclarations: MultiLine
 AlwaysBreakTemplateDeclarations: true
@@ -149,4 +148,3 @@ WhitespaceSensitiveMacros:
   - STRINGIZE
   - PP_STRINGIZE
   - BOOST_PP_STRINGIZE
-...

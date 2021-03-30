@@ -7,17 +7,20 @@
 
 #include <stdlib.h>
 
-static int* CreateIntData(int data) {
+static int*
+CreateIntData(int data) {
   int* ptr = malloc(sizeof(int));
   *ptr = data;
   return ptr;
 }
 
-static int CastVoidPtrToInt(void* vptr) {
-  return *(int*) vptr;
+static int
+CastVoidPtrToInt(void* vptr) {
+  return *(int*)vptr;
 }
 
-static void test_DoublyLinkedListNewAndFree() {
+static void
+test_DoublyLinkedListNewAndFree() {
   DoublyLinkedList* list = DoublyLinkedListNew();
 
   assert_int_equal(DoublyLinkedListSize(list), 0);
@@ -27,7 +30,8 @@ static void test_DoublyLinkedListNewAndFree() {
   DoublyLinkedListDestroy(list);
 }
 
-static void test_DoublyLinkedLisIsEmpty(void** state) {
+static void
+test_DoublyLinkedLisIsEmpty(void** state) {
   DoublyLinkedList* list = DoublyLinkedListNew();
 
   assert_true(DoublyLinkedListIsEmpty(list));
@@ -35,7 +39,8 @@ static void test_DoublyLinkedLisIsEmpty(void** state) {
   DoublyLinkedListDestroy(list);
 }
 
-static void test_DoublyLinkedListPushFront(void** state) {
+static void
+test_DoublyLinkedListPushFront(void** state) {
   DoublyLinkedList* list = DoublyLinkedListNew();
 
   DoublyLinkedListPushFront(list, CreateIntData(1));
@@ -51,7 +56,8 @@ static void test_DoublyLinkedListPushFront(void** state) {
   DoublyLinkedListDestroy(list);
 }
 
-static void test_DoublyLinkedListPushBack(void** state) {
+static void
+test_DoublyLinkedListPushBack(void** state) {
   DoublyLinkedList* list = DoublyLinkedListNew();
 
   DoublyLinkedListPushBack(list, CreateIntData(1));
@@ -67,7 +73,8 @@ static void test_DoublyLinkedListPushBack(void** state) {
   DoublyLinkedListDestroy(list);
 }
 
-static void test_DoublyLinkedListPopFront_Empty(void** state) {
+static void
+test_DoublyLinkedListPopFront_Empty(void** state) {
   DoublyLinkedList* list = DoublyLinkedListNew();
 
   assert_true(DoublyLinkedListIsEmpty(list));
@@ -76,7 +83,8 @@ static void test_DoublyLinkedListPopFront_Empty(void** state) {
   DoublyLinkedListDestroy(list);
 }
 
-static void test_DoublyLinkedListPopBack_Empty(void** state) {
+static void
+test_DoublyLinkedListPopBack_Empty(void** state) {
   DoublyLinkedList* list = DoublyLinkedListNew();
 
   assert_true(DoublyLinkedListIsEmpty(list));
@@ -85,7 +93,8 @@ static void test_DoublyLinkedListPopBack_Empty(void** state) {
   DoublyLinkedListDestroy(list);
 }
 
-static void test_DoublyLinkedListPushFront_Connection(void** state) {
+static void
+test_DoublyLinkedListPushFront_Connection(void** state) {
   DoublyLinkedList* list = DoublyLinkedListNew();
 
   DoublyLinkedListPushFront(list, CreateIntData(1));
@@ -111,7 +120,8 @@ static void test_DoublyLinkedListPushFront_Connection(void** state) {
   DoublyLinkedListDestroy(list);
 }
 
-static void test_DoublyLinkedListPushBack_Connection(void** state) {
+static void
+test_DoublyLinkedListPushBack_Connection(void** state) {
   DoublyLinkedList* list = DoublyLinkedListNew();
 
   DoublyLinkedListPushBack(list, CreateIntData(1));
@@ -137,7 +147,8 @@ static void test_DoublyLinkedListPushBack_Connection(void** state) {
   DoublyLinkedListDestroy(list);
 }
 
-static void test_DoublyLinkedListPopFront(void** state) {
+static void
+test_DoublyLinkedListPopFront(void** state) {
   DoublyLinkedList* list = DoublyLinkedListNew();
 
   DoublyLinkedListPushFront(list, CreateIntData(1));
@@ -161,7 +172,8 @@ static void test_DoublyLinkedListPopFront(void** state) {
   DoublyLinkedListDestroy(list);
 }
 
-static void test_DoublyLinkedListPopBack(void** state) {
+static void
+test_DoublyLinkedListPopBack(void** state) {
   DoublyLinkedList* list = DoublyLinkedListNew();
 
   DoublyLinkedListPushBack(list, CreateIntData(1));
@@ -185,7 +197,8 @@ static void test_DoublyLinkedListPopBack(void** state) {
   DoublyLinkedListDestroy(list);
 }
 
-static void test_DoublyLinkedListPushPop1(void** state) {
+static void
+test_DoublyLinkedListPushPop1(void** state) {
   DoublyLinkedList* list = DoublyLinkedListNew();
 
   DoublyLinkedListPushBack(list, CreateIntData(1));
@@ -212,7 +225,8 @@ static void test_DoublyLinkedListPushPop1(void** state) {
   DoublyLinkedListDestroy(list);
 }
 
-static void test_DoublyLinkedListPushPop2(void** state) {
+static void
+test_DoublyLinkedListPushPop2(void** state) {
   DoublyLinkedList* list = DoublyLinkedListNew();
 
   DoublyLinkedListPushFront(list, CreateIntData(1));
@@ -239,7 +253,8 @@ static void test_DoublyLinkedListPushPop2(void** state) {
   DoublyLinkedListDestroy(list);
 }
 
-int main(void) {
+int
+main(void) {
   const struct CMUnitTest tests[] = {
       cmocka_unit_test(test_DoublyLinkedListNewAndFree),
       cmocka_unit_test(test_DoublyLinkedLisIsEmpty),

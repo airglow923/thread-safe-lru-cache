@@ -22,7 +22,8 @@ typedef struct DoublyLinkedList {
  *
  * @return List Doubly linked list
  */
-DoublyLinkedList* DoublyLinkedListNew();
+DoublyLinkedList*
+DoublyLinkedListNew();
 
 /**
  * Returns the size of a doubly linked list.
@@ -30,7 +31,8 @@ DoublyLinkedList* DoublyLinkedListNew();
  * @param list Doubly linked list
  * @return Size
  */
-size_t DoublyLinkedListSize(DoublyLinkedList* list);
+size_t
+DoublyLinkedListSize(DoublyLinkedList* list);
 
 /**
  * Checks if a doubly linked list is empty.
@@ -38,7 +40,8 @@ size_t DoublyLinkedListSize(DoublyLinkedList* list);
  * @param list Doubly linked list
  * @return Emptiness 1 if empty; 0 otherwise
  */
-int DoublyLinkedListIsEmpty(DoublyLinkedList* list);
+int
+DoublyLinkedListIsEmpty(DoublyLinkedList* list);
 
 /**
  * Returns data at the head of a doubly linked list.
@@ -48,7 +51,8 @@ int DoublyLinkedListIsEmpty(DoublyLinkedList* list);
  * @param list Doubly linked list
  * @return Data at the head
  */
-void* DoublyLinkedListFront(DoublyLinkedList* list);
+void*
+DoublyLinkedListFront(DoublyLinkedList* list);
 
 /**
  * Returns data at the tail of a doubly linked list.
@@ -58,7 +62,8 @@ void* DoublyLinkedListFront(DoublyLinkedList* list);
  * @param list Doubly linked list
  * @return Data at the head
  */
-void* DoublyLinkedListBack(DoublyLinkedList* list);
+void*
+DoublyLinkedListBack(DoublyLinkedList* list);
 
 /**
  * Inserts an element to the head of a doubly linked list.
@@ -67,7 +72,8 @@ void* DoublyLinkedListBack(DoublyLinkedList* list);
  * @param data Data to be inserted
  * @return 0 if success; otherwise, -1
  */
-int DoublyLinkedListPushFront(DoublyLinkedList* list, void* data);
+int
+DoublyLinkedListPushFront(DoublyLinkedList* list, void* data);
 
 /**
  * Inserts an element to the tail of a doubly linked list.
@@ -76,27 +82,31 @@ int DoublyLinkedListPushFront(DoublyLinkedList* list, void* data);
  * @param data Data to be inserted
  * @return 0 if success; otherwise, -1
  */
-int DoublyLinkedListPushBack(DoublyLinkedList* list, void* data);
+int
+DoublyLinkedListPushBack(DoublyLinkedList* list, void* data);
 
 /**
  * Deletes an element at the head of a doubly linked list.
  *
  * @param list Doubly linked list
  */
-void DoublyLinkedListPopFront(DoublyLinkedList* list);
+void
+DoublyLinkedListPopFront(DoublyLinkedList* list);
 
 /**
  * Deletes an element at the tail of a doubly linked list.
  *
  * @param list Doubly linked list
  */
-void DoublyLinkedListPopBack(DoublyLinkedList* list);
+void
+DoublyLinkedListPopBack(DoublyLinkedList* list);
 
 /**
  * Deallocates a doubly linked list.
  *
  * @param list Doubly linked list
  */
-void DoublyLinkedListDestroy(DoublyLinkedList* list);
+void
+DoublyLinkedListDestroy(DoublyLinkedList* list);
 
 #endif
