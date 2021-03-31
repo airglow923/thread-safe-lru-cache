@@ -119,7 +119,7 @@ DoublyLinkedListPopFront(DoublyLinkedList* list) {
   if (DoublyLinkedListIsEmpty(list))
     return;
 
-  if (list->size_ == 1) {
+  if (DoublyLinkedListSize(list) == (unsigned)1) {
     FreeLastElement(list);
     return;
   }
@@ -138,7 +138,7 @@ DoublyLinkedListPopBack(DoublyLinkedList* list) {
   if (DoublyLinkedListIsEmpty(list))
     return;
 
-  if (list->size_ == 1) {
+  if (DoublyLinkedListSize(list) == (unsigned)1) {
     FreeLastElement(list);
     return;
   }
