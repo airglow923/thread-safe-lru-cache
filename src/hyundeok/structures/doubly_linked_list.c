@@ -24,12 +24,16 @@ InitialiseHeadAndTail(DoublyLinkedList* list, DllnT* new_node) {
   ++list->size_;
 }
 
-static void
+static void*
 FreeLastElement(DoublyLinkedList* list) {
+  void* data = DoublyLinkedListFront(list);
+
   free(list->head_);
   list->head_ = NULL;
   list->tail_ = NULL;
   --list->size_;
+
+  return data;
 }
 
 DoublyLinkedList*
@@ -108,42 +112,44 @@ DoublyLinkedListPushBack(DoublyLinkedList* list, void* data) {
   return 0;
 }
 
-void
+void*
 DoublyLinkedListPopFront(DoublyLinkedList* list) {
   if (DoublyLinkedListIsEmpty(list))
-    return;
+    return NULL;
 
-  if (DoublyLinkedListSize(list) == (unsigned)1) {
-    FreeLastElement(list);
-    return;
-  }
+  if (DoublyLinkedListSize(list) == (unsigned)1)
+    return FreeLastElement(list);
 
   DllnT* tmp = list->head_->next_;
+  void* data = DoublyLinkedListFront(list);
 
   free(list->head_);
   tmp->prev_ = NULL;
   list->head_ = tmp;
 
   --list->size_;
+
+  return data;
 }
 
-void
+void*
 DoublyLinkedListPopBack(DoublyLinkedList* list) {
   if (DoublyLinkedListIsEmpty(list))
-    return;
+    return NULL;
 
-  if (DoublyLinkedListSize(list) == (unsigned)1) {
-    FreeLastElement(list);
-    return;
-  }
+  if (DoublyLinkedListSize(list) == (unsigned)1)
+    return FreeLastElement(list);
 
   DllnT* tmp = list->tail_->prev_;
+  void* data = DoublyLinkedListBack(list);
 
   free(list->tail_);
   tmp->next_ = NULL;
   list->tail_ = tmp;
 
   --list->size_;
+
+  return data;
 }
 
 void

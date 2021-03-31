@@ -20,6 +20,22 @@ CastVoidPtrToInt(void* vptr) {
 }
 
 static void
+FreeIntArray(int** arr, int size) {
+  for (int i = 0; i < size; ++i)
+    free(arr[i]);
+}
+
+static int*
+CreateRandomArray(int size) {
+  int* arr = malloc(size * sizeof(int));
+
+  for (int i = 0; i < size; ++i)
+    arr[i] = rand();
+
+  return arr;
+}
+
+static void
 test_DoublyLinkedListNewAndFree() {
   DoublyLinkedList* list = DoublyLinkedListNew();
 
@@ -42,35 +58,47 @@ test_DoublyLinkedLisIsEmpty(void** state) {
 static void
 test_DoublyLinkedListPushFront(void** state) {
   DoublyLinkedList* list = DoublyLinkedListNew();
+  int* input[] = {
+      CreateIntData(1),
+      CreateIntData(2),
+      CreateIntData(3),
+  };
 
-  DoublyLinkedListPushFront(list, CreateIntData(1));
+  DoublyLinkedListPushFront(list, input[0]);
   assert_int_equal(DoublyLinkedListSize(list), 1);
-  DoublyLinkedListPushFront(list, CreateIntData(2));
+  DoublyLinkedListPushFront(list, input[1]);
   assert_int_equal(DoublyLinkedListSize(list), 2);
-  DoublyLinkedListPushFront(list, CreateIntData(3));
+  DoublyLinkedListPushFront(list, input[2]);
   assert_int_equal(DoublyLinkedListSize(list), 3);
 
   assert_false(DoublyLinkedListIsEmpty(list));
   assert_int_equal(CastVoidPtrToInt(DoublyLinkedListFront(list)), 3);
 
   DoublyLinkedListDestroy(list);
+  FreeIntArray(input, 3);
 }
 
 static void
 test_DoublyLinkedListPushBack(void** state) {
   DoublyLinkedList* list = DoublyLinkedListNew();
+  int* input[] = {
+      CreateIntData(1),
+      CreateIntData(2),
+      CreateIntData(3),
+  };
 
-  DoublyLinkedListPushBack(list, CreateIntData(1));
+  DoublyLinkedListPushBack(list, input[0]);
   assert_int_equal(DoublyLinkedListSize(list), 1);
-  DoublyLinkedListPushBack(list, CreateIntData(2));
+  DoublyLinkedListPushBack(list, input[1]);
   assert_int_equal(DoublyLinkedListSize(list), 2);
-  DoublyLinkedListPushBack(list, CreateIntData(3));
+  DoublyLinkedListPushBack(list, input[2]);
   assert_int_equal(DoublyLinkedListSize(list), 3);
 
   assert_false(DoublyLinkedListIsEmpty(list));
   assert_int_equal(CastVoidPtrToInt(DoublyLinkedListBack(list)), 3);
 
   DoublyLinkedListDestroy(list);
+  FreeIntArray(input, 3);
 }
 
 static void
@@ -96,12 +124,17 @@ test_DoublyLinkedListPopBack_Empty(void** state) {
 static void
 test_DoublyLinkedListPushFront_Connection(void** state) {
   DoublyLinkedList* list = DoublyLinkedListNew();
+  int* input[] = {
+      CreateIntData(1),
+      CreateIntData(2),
+      CreateIntData(3),
+  };
 
-  DoublyLinkedListPushFront(list, CreateIntData(1));
+  DoublyLinkedListPushFront(list, input[0]);
   assert_int_equal(DoublyLinkedListSize(list), 1);
-  DoublyLinkedListPushFront(list, CreateIntData(2));
+  DoublyLinkedListPushFront(list, input[1]);
   assert_int_equal(DoublyLinkedListSize(list), 2);
-  DoublyLinkedListPushFront(list, CreateIntData(3));
+  DoublyLinkedListPushFront(list, input[2]);
   assert_int_equal(DoublyLinkedListSize(list), 3);
 
   assert_false(DoublyLinkedListIsEmpty(list));
@@ -118,17 +151,23 @@ test_DoublyLinkedListPushFront_Connection(void** state) {
   assert_ptr_equal(list->head_->next_, list->head_->next_->next_->prev_);
 
   DoublyLinkedListDestroy(list);
+  FreeIntArray(input, 3);
 }
 
 static void
 test_DoublyLinkedListPushBack_Connection(void** state) {
   DoublyLinkedList* list = DoublyLinkedListNew();
+  int* input[] = {
+      CreateIntData(1),
+      CreateIntData(2),
+      CreateIntData(3),
+  };
 
-  DoublyLinkedListPushBack(list, CreateIntData(1));
+  DoublyLinkedListPushBack(list, input[0]);
   assert_int_equal(DoublyLinkedListSize(list), 1);
-  DoublyLinkedListPushBack(list, CreateIntData(2));
+  DoublyLinkedListPushBack(list, input[1]);
   assert_int_equal(DoublyLinkedListSize(list), 2);
-  DoublyLinkedListPushBack(list, CreateIntData(3));
+  DoublyLinkedListPushBack(list, input[2]);
   assert_int_equal(DoublyLinkedListSize(list), 3);
 
   assert_false(DoublyLinkedListIsEmpty(list));
@@ -145,17 +184,23 @@ test_DoublyLinkedListPushBack_Connection(void** state) {
   assert_ptr_equal(list->tail_->prev_, list->tail_->prev_->prev_->next_);
 
   DoublyLinkedListDestroy(list);
+  FreeIntArray(input, 3);
 }
 
 static void
 test_DoublyLinkedListPopFront(void** state) {
   DoublyLinkedList* list = DoublyLinkedListNew();
+  int* input[] = {
+      CreateIntData(1),
+      CreateIntData(2),
+      CreateIntData(3),
+  };
 
-  DoublyLinkedListPushFront(list, CreateIntData(1));
+  DoublyLinkedListPushFront(list, input[0]);
   assert_int_equal(DoublyLinkedListSize(list), 1);
-  DoublyLinkedListPushFront(list, CreateIntData(2));
+  DoublyLinkedListPushFront(list, input[1]);
   assert_int_equal(DoublyLinkedListSize(list), 2);
-  DoublyLinkedListPushFront(list, CreateIntData(3));
+  DoublyLinkedListPushFront(list, input[2]);
   assert_int_equal(DoublyLinkedListSize(list), 3);
 
   assert_false(DoublyLinkedListIsEmpty(list));
@@ -170,17 +215,23 @@ test_DoublyLinkedListPopFront(void** state) {
   assert_true(DoublyLinkedListIsEmpty(list));
 
   DoublyLinkedListDestroy(list);
+  FreeIntArray(input, 3);
 }
 
 static void
 test_DoublyLinkedListPopBack(void** state) {
   DoublyLinkedList* list = DoublyLinkedListNew();
+  int* input[] = {
+      CreateIntData(1),
+      CreateIntData(2),
+      CreateIntData(3),
+  };
 
-  DoublyLinkedListPushBack(list, CreateIntData(1));
+  DoublyLinkedListPushBack(list, input[0]);
   assert_int_equal(DoublyLinkedListSize(list), 1);
-  DoublyLinkedListPushBack(list, CreateIntData(2));
+  DoublyLinkedListPushBack(list, input[1]);
   assert_int_equal(DoublyLinkedListSize(list), 2);
-  DoublyLinkedListPushBack(list, CreateIntData(3));
+  DoublyLinkedListPushBack(list, input[2]);
   assert_int_equal(DoublyLinkedListSize(list), 3);
 
   assert_false(DoublyLinkedListIsEmpty(list));
@@ -195,19 +246,25 @@ test_DoublyLinkedListPopBack(void** state) {
   assert_true(DoublyLinkedListIsEmpty(list));
 
   DoublyLinkedListDestroy(list);
+  FreeIntArray(input, 3);
 }
 
 static void
 test_DoublyLinkedListPushPop1(void** state) {
   DoublyLinkedList* list = DoublyLinkedListNew();
+  int* input[] = {
+      CreateIntData(1),
+      CreateIntData(2),
+      CreateIntData(3),
+  };
 
-  DoublyLinkedListPushBack(list, CreateIntData(1));
+  DoublyLinkedListPushBack(list, input[0]);
   assert_int_equal(DoublyLinkedListSize(list), 1);
   DoublyLinkedListPopFront(list);
   assert_int_equal(DoublyLinkedListSize(list), 0);
-  DoublyLinkedListPushBack(list, CreateIntData(2));
+  DoublyLinkedListPushBack(list, input[1]);
   assert_int_equal(DoublyLinkedListSize(list), 1);
-  DoublyLinkedListPushBack(list, CreateIntData(3));
+  DoublyLinkedListPushBack(list, input[2]);
   assert_int_equal(DoublyLinkedListSize(list), 2);
   DoublyLinkedListPopBack(list);
   assert_int_equal(DoublyLinkedListSize(list), 1);
@@ -223,19 +280,25 @@ test_DoublyLinkedListPushPop1(void** state) {
   assert_true(DoublyLinkedListIsEmpty(list));
 
   DoublyLinkedListDestroy(list);
+  FreeIntArray(input, 3);
 }
 
 static void
 test_DoublyLinkedListPushPop2(void** state) {
   DoublyLinkedList* list = DoublyLinkedListNew();
+  int* input[] = {
+      CreateIntData(1),
+      CreateIntData(2),
+      CreateIntData(3),
+  };
 
-  DoublyLinkedListPushFront(list, CreateIntData(1));
+  DoublyLinkedListPushFront(list, input[0]);
   assert_int_equal(DoublyLinkedListSize(list), 1);
   DoublyLinkedListPopBack(list);
   assert_int_equal(DoublyLinkedListSize(list), 0);
-  DoublyLinkedListPushFront(list, CreateIntData(2));
+  DoublyLinkedListPushFront(list, input[1]);
   assert_int_equal(DoublyLinkedListSize(list), 1);
-  DoublyLinkedListPushFront(list, CreateIntData(3));
+  DoublyLinkedListPushFront(list, input[2]);
   assert_int_equal(DoublyLinkedListSize(list), 2);
   DoublyLinkedListPopFront(list);
   assert_int_equal(DoublyLinkedListSize(list), 1);
@@ -251,6 +314,7 @@ test_DoublyLinkedListPushPop2(void** state) {
   assert_true(DoublyLinkedListIsEmpty(list));
 
   DoublyLinkedListDestroy(list);
+  FreeIntArray(input, 3);
 }
 
 int

@@ -85,16 +85,18 @@ DoublyLinkedListPushBack(DoublyLinkedList* list, void* data);
  * Deletes an element at the head of a doubly linked list.
  *
  * @param list Doubly linked list
+ * @return Data of the removed element
  */
-void
+void*
 DoublyLinkedListPopFront(DoublyLinkedList* list);
 
 /**
  * Deletes an element at the tail of a doubly linked list.
  *
  * @param list Doubly linked list
+ * @return Data of the removed element
  */
-void
+void*
 DoublyLinkedListPopBack(DoublyLinkedList* list);
 
 /**
