@@ -1,30 +1,58 @@
 include(FetchCMocka.cmake)
 
-set(TEST_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/test_doubly_linked_list.c)
+SET(CMOCKA_TEST_ABORT 1)
 
-add_executable(LRU_Cache_Test "")
+add_executable(test_doubly_linked_list "")
 
-target_sources(LRU_Cache_Test PRIVATE ${TEST_FILES})
+target_sources(test_doubly_linked_list
+    PRIVATE test_doubly_linked_list.c)
 
-target_compile_features(LRU_Cache_Test PRIVATE c_std_99)
+target_compile_features(test_doubly_linked_list
+    PRIVATE c_std_99)
 
-target_link_libraries(
-    LRU_Cache_Test
-        PRIVATE ${PROJECT_NAME}
-        PRIVATE cmocka-static)
+target_link_libraries(test_doubly_linked_list
+    PRIVATE ${PROJECT_NAME}
+    PRIVATE cmocka-static)
 
-set_target_properties(LRU_Cache_Test PROPERTIES LINKER_LANGUAGE C)
+set_target_properties(test_doubly_linked_list
+    PROPERTIES
+        LINKER_LANGUAGE C)
+
+add_test(NAME CTestRun1 COMMAND test_doubly_linked_list)
+
+set_tests_properties(CTestRun1 PROPERTIES DEPENDS CTestBuild)
+
+add_executable(test_mutex_doubly_linked_list "")
+
+target_sources(test_mutex_doubly_linked_list
+    PRIVATE test_mutex_doubly_linked_list.c)
+
+target_compile_features(test_mutex_doubly_linked_list
+    PRIVATE c_std_99)
+
+target_link_libraries(test_mutex_doubly_linked_list
+    PRIVATE ${PROJECT_NAME}
+    PRIVATE cmocka-static)
+
+set_target_properties(test_mutex_doubly_linked_list
+    PROPERTIES
+        LINKER_LANGUAGE C)
 
 add_test(
     NAME
         CTestBuild
-    COMMAND
-        "${CMAKE_COMMAND}" --build ${CMAKE_BINARY_DIR} --target LRU_Cache_Test
-)
+    COMMAND ${CMAKE_COMMAND}
+        --build ${CMAKE_BINARY_DIR}
+        --target
+            test_doubly_linked_list
+            test_mutex_doubly_linked_list)
 
-add_test(NAME CTestRun COMMAND LRU_Cache_Test)
+add_test(NAME CTestRun2 COMMAND test_mutex_doubly_linked_list)
 
-set_tests_properties(CTestRun PROPERTIES DEPENDS CTestBuild)
+set_tests_properties(CTestRun2 PROPERTIES DEPENDS CTestBuild)
 
-add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} DEPENDS LRU_Cache_Test)
+add_custom_target(check
+    COMMAND ${CMAKE_CTEST_COMMAND}
+    DEPENDS
+        test_doubly_linked_list
+        test_mutex_doubly_linked_list)

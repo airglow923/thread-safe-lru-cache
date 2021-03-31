@@ -9,20 +9,24 @@ string(CONCAT PRJ_VER
     ".${THREAD_SAFE_LRU_CACHE_VERSION_MINOR}"
     ".${THREAD_SAFE_LRU_CACHE_VERSION_PATCH}")
 
+find_program(CMAKE_C_COMPILER
+    NAMES $ENV{CC} clang PATHS ENV PATH NO_DEFAULT_PATH)
+
 project(thread-safe-lru-cache
     VERSION ${PRJ_VER}
     DESCRIPTION "Thread-safe time-based LRU cache"
     LANGUAGES C) 
 
-set(CMAKE_C_STANDARD 99)
-set(CMAKE_C_STANDARD_REQUIRED True)
-
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(deps REQUIRED IMPORTED_TARGET glib-2.0)
-
 if (NOT UNIX)
   message(FATAL_ERROR "Only Unix is allowed to compile the source.")
 endif()
+
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD_REQUIRED True)
+
+find_package(Threads REQUIRED)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(deps REQUIRED IMPORTED_TARGET glib-2.0)
 
 # find_program(CLANG_TIDY_FOUND NAMES clang-tidy)
 # if (CLANG_TIDY_FOUND)
@@ -38,8 +42,10 @@ if(EXISTS "${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json")
       ${CMAKE_CURRENT_SOURCE_DIR}/compile_commands.json)
 endif()
 
-set(PROJECT_COMPILE_FLAGS
+add_compile_options(
+    -pthread
     # -fsanitize=leak
+    # -fsanitize=address
     -fsanitize=thread
     -fPIC
     -g
@@ -47,21 +53,22 @@ set(PROJECT_COMPILE_FLAGS
     -Wextra
     -Wcast-align
     -Wcast-qual
-    -Wdiv-by-zero)
+    -Wdiv-by-zero
+    -fno-omit-frame-pointer
+    )
 
-set(CMAKE_EXE_LINKER_FLAGS
-    ${CMAKE_EXE_LINKER_FLAGS}
-    # -fsanitize=leak
-    -fsanitize=thread)
-set(CMAKE_SHARED_LINKER_FLAGS
-    ${CMAKE_SHARED_LINKER_FLAGS}
-    # -fsanitize=leak
-    -fsanitize=thread)
+add_link_options(
+  # -fsanitize=leak
+  # -fsanitize=address
+  -fsanitize=thread
+  )
+
+# ThreadSanitizer
+set(COMPILER_RT_DEBUG ON)
+
+link_libraries(Threads::Threads)
 
 add_library(${PROJECT_NAME} SHARED)
-
-target_compile_options(${PROJECT_NAME}
-    PRIVATE $<$<COMPILE_LANGUAGE:C>:${PROJECT_COMPILE_FLAGS}>)
 
 add_subdirectory(include)
 add_subdirectory(src)
