@@ -46,8 +46,6 @@ DoublyLinkedListIsEmpty(DoublyLinkedList* list);
 /**
  * Returns data at the head of a doubly linked list.
  *
- * This must be called when there is at least one element in a list.
- *
  * @param list Doubly linked list
  * @return Data at the head
  */
@@ -56,8 +54,6 @@ DoublyLinkedListFront(DoublyLinkedList* list);
 
 /**
  * Returns data at the tail of a doubly linked list.
- *
- * This must be called when there is at least one element in a list.
  *
  * @param list Doubly linked list
  * @return Data at the head

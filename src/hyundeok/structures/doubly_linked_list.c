@@ -64,12 +64,12 @@ DoublyLinkedListIsEmpty(DoublyLinkedList* list) {
 
 void*
 DoublyLinkedListFront(DoublyLinkedList* list) {
-  return list->head_->data_;
+  return DoublyLinkedListSize(list) == 0 ? NULL : list->head_->data_;
 }
 
 void*
 DoublyLinkedListBack(DoublyLinkedList* list) {
-  return list->tail_->data_;
+  return DoublyLinkedListSize(list) == 0 ? NULL : list->tail_->data_;
 }
 
 int
@@ -154,7 +154,7 @@ DoublyLinkedListPopBack(DoublyLinkedList* list) {
 
 void
 DoublyLinkedListDestroy(DoublyLinkedList* list) {
-  for (DllnT* head = list->head_; head;) {
+  for (DllnT* head = list->head_; head != NULL;) {
     DllnT* next = head->next_;
     FreeDoublyLinkedListNode(head);
     head = next;
