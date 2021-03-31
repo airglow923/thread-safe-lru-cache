@@ -24,6 +24,12 @@ InitialiseHeadAndTail(DoublyLinkedList* list, DllnT* new_node) {
   ++list->size_;
 }
 
+static void
+FreeDoublyLinkedListNode(void (*destructor)(void*), DllnT* node) {
+  destructor(node->data_);
+  free(node);
+}
+
 static void*
 FreeLastElement(DoublyLinkedList* list) {
   void* data = DoublyLinkedListFront(list);
@@ -36,14 +42,23 @@ FreeLastElement(DoublyLinkedList* list) {
   return data;
 }
 
+static void
+EmptyDestructor(void* data) {}
+
 DoublyLinkedList*
 DoublyLinkedListNew() {
+  return DoublyLinkedListNewFull(EmptyDestructor);
+}
+
+DoublyLinkedList*
+DoublyLinkedListNewFull(void (*destructor)(void*)) {
   DoublyLinkedList* list = malloc(sizeof(DoublyLinkedList));
 
   // check whether list is NULL or not; return NULL if NULL
   HYUNDEOK_MEMORY_ASSERT(list, NULL);
 
   list->size_ = 0;
+  list->desetructor_ = destructor;
   list->head_ = NULL;
   list->tail_ = NULL;
 
@@ -123,7 +138,7 @@ DoublyLinkedListPopFront(DoublyLinkedList* list) {
   DllnT* tmp = list->head_->next_;
   void* data = DoublyLinkedListFront(list);
 
-  free(list->head_);
+  FreeDoublyLinkedListNode(list->desetructor_, list->head_);
   tmp->prev_ = NULL;
   list->head_ = tmp;
 
@@ -143,7 +158,7 @@ DoublyLinkedListPopBack(DoublyLinkedList* list) {
   DllnT* tmp = list->tail_->prev_;
   void* data = DoublyLinkedListBack(list);
 
-  free(list->tail_);
+  FreeDoublyLinkedListNode(list->desetructor_, list->tail_);
   tmp->next_ = NULL;
   list->tail_ = tmp;
 
@@ -156,7 +171,7 @@ void
 DoublyLinkedListDestroy(DoublyLinkedList* list) {
   for (DllnT* head = list->head_; head != NULL;) {
     DllnT* next = head->next_;
-    free(head);
+    FreeDoublyLinkedListNode(list->desetructor_, head);
     head = next;
   }
 

@@ -13,6 +13,7 @@ typedef struct DoublyLinkedListNode {
 
 typedef struct DoublyLinkedList {
   size_t size_;
+  void (*desetructor_)(void*);
   DllnT* head_;
   DllnT* tail_;
 } DoublyLinkedList;
@@ -24,6 +25,15 @@ typedef struct DoublyLinkedList {
  */
 DoublyLinkedList*
 DoublyLinkedListNew(void);
+
+/**
+ * Creates a doubly linked list with a destructor.
+ *
+ * @param destructor Destructor for elements
+ * @return List Doubly linked list
+ */
+DoublyLinkedList*
+DoublyLinkedListNewFull(void (*destructor)(void*));
 
 /**
  * Returns the size of a doubly linked list.
