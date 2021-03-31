@@ -64,12 +64,12 @@ DoublyLinkedListIsEmpty(DoublyLinkedList* list) {
 
 void*
 DoublyLinkedListFront(DoublyLinkedList* list) {
-  return DoublyLinkedListSize(list) == 0 ? NULL : list->head_->data_;
+  return DoublyLinkedListIsEmpty(list) ? NULL : list->head_->data_;
 }
 
 void*
 DoublyLinkedListBack(DoublyLinkedList* list) {
-  return DoublyLinkedListSize(list) == 0 ? NULL : list->tail_->data_;
+  return DoublyLinkedListIsEmpty(list) ? NULL : list->tail_->data_;
 }
 
 int
