@@ -25,14 +25,8 @@ InitialiseHeadAndTail(DoublyLinkedList* list, DllnT* new_node) {
 }
 
 static void
-FreeDoublyLinkedListNode(DllnT* node) {
-  free(node->data_);
-  free(node);
-}
-
-static void
 FreeLastElement(DoublyLinkedList* list) {
-  FreeDoublyLinkedListNode(list->head_);
+  free(list->head_);
   list->head_ = NULL;
   list->tail_ = NULL;
   --list->size_;
@@ -126,7 +120,7 @@ DoublyLinkedListPopFront(DoublyLinkedList* list) {
 
   DllnT* tmp = list->head_->next_;
 
-  FreeDoublyLinkedListNode(list->head_);
+  free(list->head_);
   tmp->prev_ = NULL;
   list->head_ = tmp;
 
@@ -145,7 +139,7 @@ DoublyLinkedListPopBack(DoublyLinkedList* list) {
 
   DllnT* tmp = list->tail_->prev_;
 
-  FreeDoublyLinkedListNode(list->tail_);
+  free(list->tail_);
   tmp->next_ = NULL;
   list->tail_ = tmp;
 
@@ -156,7 +150,7 @@ void
 DoublyLinkedListDestroy(DoublyLinkedList* list) {
   for (DllnT* head = list->head_; head != NULL;) {
     DllnT* next = head->next_;
-    FreeDoublyLinkedListNode(head);
+    free(head);
     head = next;
   }
 
