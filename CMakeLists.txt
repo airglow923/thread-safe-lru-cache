@@ -46,7 +46,7 @@ add_compile_options(
     -pthread
     # -fsanitize=leak
     # -fsanitize=address
-    -fsanitize=thread
+    # -fsanitize=thread
     -fPIC
     -g
     -Wall
@@ -60,13 +60,13 @@ add_compile_options(
 add_link_options(
   # -fsanitize=leak
   # -fsanitize=address
-  -fsanitize=thread
+  # -fsanitize=thread
   )
 
 # ThreadSanitizer
 set(COMPILER_RT_DEBUG ON)
 
-link_libraries(Threads::Threads)
+link_libraries(Threads::Threads PkgConfig::deps)
 
 add_library(${PROJECT_NAME} SHARED)
 
@@ -79,7 +79,8 @@ target_include_directories(${PROJECT_NAME}
         $<INSTALL_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     PRIVATE
         ${GLIB_INCLUDE_DIRS}
-        src)
+        src
+        )
 
 target_sources(${PROJECT_NAME}
     PUBLIC ${INCLUDE_FILES}
@@ -88,18 +89,18 @@ target_sources(${PROJECT_NAME}
 set_target_properties(${PROJECT_NAME} PROPERTIES
     VERSION ${PROJECT_VERSION}
     SOVERSION ${THREAD_SAFE_LRU_CACHE_VERSION_MAJOR}
-    PUBLIC_HEADER "${INCLUDE_FILES}")
+    PUBLIC_HEADER "${INCLUDE_FILES}"
+    )
 
 include(GNUInstallDirs)
 
 install(TARGETS ${PROJECT_NAME}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    )
 
 add_executable(main ${CMAKE_CURRENT_SOURCE_DIR}/src/main.c)
-
-target_link_libraries(main ${PROJECT_NAME} PkgConfig::deps)
 
 enable_testing()
 add_subdirectory(test)
