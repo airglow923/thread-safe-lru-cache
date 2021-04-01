@@ -3,8 +3,6 @@
 
 #include "hyundeok/types.h"
 
-// this is used for internal implementation
-// it should not be accessed by end users
 typedef struct DoublyLinkedListNode {
   void* data_;
   struct DoublyLinkedListNode* prev_;
@@ -13,7 +11,7 @@ typedef struct DoublyLinkedListNode {
 
 typedef struct DoublyLinkedList {
   size_t size_;
-  void (*desetructor_)(void*);
+  void (*destructor_)(void*);
   DllnT* head_;
   DllnT* tail_;
 } DoublyLinkedList;
@@ -76,38 +74,47 @@ DoublyLinkedListBack(DoublyLinkedList* list);
  *
  * @param list Doubly linked list
  * @param data Data to be inserted
- * @return 0 if success; otherwise, -1
+ * @return Inserted node if success; otherwise, NULL
  */
-int
-DoublyLinkedListPushFront(DoublyLinkedList* list, void* data);
+DllnT*
+DoublyLinkedListPrepend(DoublyLinkedList* list, void* data);
 
 /**
  * Inserts an element to the tail of a doubly linked list.
  *
  * @param list Doubly linked list
  * @param data Data to be inserted
- * @return 0 if success; otherwise, -1
+ * @return Inserted node if success; otherwise, NULL
  */
-int
-DoublyLinkedListPushBack(DoublyLinkedList* list, void* data);
+DllnT*
+DoublyLinkedListAppend(DoublyLinkedList* list, void* data);
+
+/**
+ * Removes node and decrements the size of a list.
+ *
+ * The node should be present on the list. If not, the behaviour is undefined.
+ *
+ * @param list Doubly linked list
+ * @param node Doubly linked list node
+ */
+void
+DoublyLinkedListRemove(DoublyLinkedList* list, DllnT* node);
 
 /**
  * Deletes an element at the head of a doubly linked list.
  *
  * @param list Doubly linked list
- * @return Data of the removed element
  */
-void*
-DoublyLinkedListPopFront(DoublyLinkedList* list);
+void
+DoublyLinkedListRemoveFront(DoublyLinkedList* list);
 
 /**
  * Deletes an element at the tail of a doubly linked list.
  *
  * @param list Doubly linked list
- * @return Data of the removed element
  */
-void*
-DoublyLinkedListPopBack(DoublyLinkedList* list);
+void
+DoublyLinkedListRemoveBack(DoublyLinkedList* list);
 
 /**
  * Deallocates a doubly linked list.

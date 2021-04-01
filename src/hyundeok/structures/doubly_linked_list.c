@@ -25,29 +25,23 @@ InitialiseHeadAndTail(DoublyLinkedList* list, DllnT* new_node) {
 }
 
 static void
-FreeDoublyLinkedListNode(void (*destructor)(void*), DllnT* node) {
-  destructor(node->data_);
+FreeDoublyLinkedListNode(DllnT* node, void (*destructor)(void*)) {
+  if (destructor != NULL)
+    destructor(node->data_);
   free(node);
 }
 
-static void*
+static void
 FreeLastElement(DoublyLinkedList* list) {
-  void* data = DoublyLinkedListFront(list);
-
-  free(list->head_);
+  FreeDoublyLinkedListNode(list->head_, list->destructor_);
   list->head_ = NULL;
   list->tail_ = NULL;
   --list->size_;
-
-  return data;
 }
-
-static void
-EmptyDestructor(void* data) {}
 
 DoublyLinkedList*
 DoublyLinkedListNew() {
-  return DoublyLinkedListNewFull(EmptyDestructor);
+  return DoublyLinkedListNewFull(NULL);
 }
 
 DoublyLinkedList*
@@ -58,7 +52,7 @@ DoublyLinkedListNewFull(void (*destructor)(void*)) {
   HYUNDEOK_MEMORY_ASSERT(list, NULL);
 
   list->size_ = 0;
-  list->desetructor_ = destructor;
+  list->destructor_ = destructor;
   list->head_ = NULL;
   list->tail_ = NULL;
 
@@ -85,12 +79,12 @@ DoublyLinkedListBack(DoublyLinkedList* list) {
   return DoublyLinkedListIsEmpty(list) ? NULL : list->tail_->data_;
 }
 
-int
-DoublyLinkedListPushFront(DoublyLinkedList* list, void* data) {
+DllnT*
+DoublyLinkedListPrepend(DoublyLinkedList* list, void* data) {
   DllnT* new_node = CreateDoublyLinkedListNode(data);
 
-  // check whether new_node is NULL or not; return -1 if NULL
-  HYUNDEOK_ASSERT(!new_node, 0, -1, NULL);
+  // check whether new_node is NULL or not; return NULL if NULL
+  HYUNDEOK_ASSERT(!new_node, 0, NULL, NULL);
 
   if (DoublyLinkedListIsEmpty(list)) {
     InitialiseHeadAndTail(list, new_node);
@@ -103,15 +97,15 @@ DoublyLinkedListPushFront(DoublyLinkedList* list, void* data) {
 
   ++list->size_;
 
-  return 0;
+  return list->head_;
 }
 
-int
-DoublyLinkedListPushBack(DoublyLinkedList* list, void* data) {
+DllnT*
+DoublyLinkedListAppend(DoublyLinkedList* list, void* data) {
   DllnT* new_node = CreateDoublyLinkedListNode(data);
 
   // check whether new_node is NULL or not; return -1 if NULL
-  HYUNDEOK_ASSERT(!new_node, 0, -1, NULL);
+  HYUNDEOK_ASSERT(!new_node, 0, NULL, NULL);
 
   if (DoublyLinkedListIsEmpty(list)) {
     InitialiseHeadAndTail(list, new_node);
@@ -124,54 +118,81 @@ DoublyLinkedListPushBack(DoublyLinkedList* list, void* data) {
 
   ++list->size_;
 
-  return 0;
+  return list->tail_;
 }
 
-void*
-DoublyLinkedListPopFront(DoublyLinkedList* list) {
-  if (DoublyLinkedListIsEmpty(list))
-    return NULL;
+void
+DoublyLinkedListRemove(DoublyLinkedList* list, DllnT* node) {
+  if (node == NULL)
+    return;
 
-  if (DoublyLinkedListSize(list) == (unsigned)1)
-    return FreeLastElement(list);
+  DllnT* prev = node->prev_;
+  DllnT* next = node->next_;
+
+  if (prev != NULL)
+    prev->next_ = node->next_;
+
+  if (next != NULL)
+    next->prev_ = node->prev_;
+
+  FreeDoublyLinkedListNode(node, list->destructor_);
+
+  --list->size_;
+
+  const size_t size = DoublyLinkedListSize(list);
+
+  if (size == 0) {
+    list->head_ = NULL;
+    list->tail_ = NULL;
+  } else if (size == 1) {
+    if (prev != NULL)
+      list->tail_ = list->head_;
+    if (next != NULL)
+      list->head_ = list->tail_;
+  }
+}
+
+void
+DoublyLinkedListRemoveFront(DoublyLinkedList* list) {
+  if (DoublyLinkedListIsEmpty(list))
+    return;
+
+  if (DoublyLinkedListSize(list) == (unsigned)1) {
+    FreeLastElement(list);
+    return;
+  }
 
   DllnT* tmp = list->head_->next_;
-  void* data = DoublyLinkedListFront(list);
-
-  FreeDoublyLinkedListNode(list->desetructor_, list->head_);
+  FreeDoublyLinkedListNode(list->head_, list->destructor_);
   tmp->prev_ = NULL;
   list->head_ = tmp;
 
   --list->size_;
-
-  return data;
 }
 
-void*
-DoublyLinkedListPopBack(DoublyLinkedList* list) {
+void
+DoublyLinkedListRemoveBack(DoublyLinkedList* list) {
   if (DoublyLinkedListIsEmpty(list))
-    return NULL;
+    return;
 
-  if (DoublyLinkedListSize(list) == (unsigned)1)
-    return FreeLastElement(list);
+  if (DoublyLinkedListSize(list) == (unsigned)1) {
+    FreeLastElement(list);
+    return;
+  }
 
   DllnT* tmp = list->tail_->prev_;
-  void* data = DoublyLinkedListBack(list);
-
-  FreeDoublyLinkedListNode(list->desetructor_, list->tail_);
+  FreeDoublyLinkedListNode(list->tail_, list->destructor_);
   tmp->next_ = NULL;
   list->tail_ = tmp;
 
   --list->size_;
-
-  return data;
 }
 
 void
 DoublyLinkedListDestroy(DoublyLinkedList* list) {
   for (DllnT* head = list->head_; head != NULL;) {
     DllnT* next = head->next_;
-    FreeDoublyLinkedListNode(list->desetructor_, head);
+    FreeDoublyLinkedListNode(head, list->destructor_);
     head = next;
   }
 
