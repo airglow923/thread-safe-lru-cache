@@ -1,7 +1,7 @@
 #ifndef HYUNDEOK_STRUCTURES_DOUBLY_LINKED_LIST_H
 #define HYUNDEOK_STRUCTURES_DOUBLY_LINKED_LIST_H
 
-#include "hyundeok/types.h"
+#include <stddef.h>
 
 typedef struct DoublyLinkedListNode {
   void* data_;
