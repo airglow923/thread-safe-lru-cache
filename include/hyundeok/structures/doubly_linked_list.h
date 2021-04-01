@@ -10,7 +10,6 @@ typedef struct DoublyLinkedListNode {
 } DllnT;
 
 typedef struct DoublyLinkedList {
-  size_t size_;
   void (*destructor_)(void*);
   DllnT* head_;
   DllnT* tail_;
@@ -32,15 +31,6 @@ DoublyLinkedListNew(void);
  */
 DoublyLinkedList*
 DoublyLinkedListNewFull(void (*destructor)(void*));
-
-/**
- * Returns the size of a doubly linked list.
- *
- * @param list Doubly linked list
- * @return Size
- */
-size_t
-DoublyLinkedListSize(DoublyLinkedList* list);
 
 /**
  * Checks if a doubly linked list is empty.
@@ -90,15 +80,42 @@ DllnT*
 DoublyLinkedListAppend(DoublyLinkedList* list, void* data);
 
 /**
+ * Prepend a node to a doubly linked list.
+ *
+ * The leftmost node must be NULL.
+ *
+ * @param list Doubly linked list
+ * @param node Node to be prepended
+ * @return New head of a list
+ */
+DllnT*
+DoublyLinkedListPrependNode(DoublyLinkedList* list, DllnT* node);
+
+/**
+ * Append a node to a doubly linked list.
+ *
+ * The node should be present on the list. If not, the behaviour is undefined.
+ * The leftmost node must be NULL.
+ *
+ * @param list Doubly linked list
+ * @param node Node to be appended
+ * @return New tail of a list
+ */
+DllnT*
+DoublyLinkedListAppendNode(DoublyLinkedList* list, DllnT* node);
+
+/**
  * Removes node and decrements the size of a list.
  *
  * The node should be present on the list. If not, the behaviour is undefined.
+ * The rightmost node must be NULL.
  *
  * @param list Doubly linked list
  * @param node Doubly linked list node
+ * @param free_node Indicates whether to deallocate removed node
  */
 void
-DoublyLinkedListRemove(DoublyLinkedList* list, DllnT* node);
+DoublyLinkedListRemove(DoublyLinkedList* list, DllnT* node, int free_node);
 
 /**
  * Deletes an element at the head of a doubly linked list.

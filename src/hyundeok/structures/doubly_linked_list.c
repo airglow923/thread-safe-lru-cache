@@ -21,7 +21,6 @@ static void
 InitialiseHeadAndTail(DoublyLinkedList* list, DllnT* new_node) {
   list->head_ = new_node;
   list->tail_ = new_node;
-  ++list->size_;
 }
 
 static void
@@ -36,7 +35,11 @@ FreeLastElement(DoublyLinkedList* list) {
   FreeDoublyLinkedListNode(list->head_, list->destructor_);
   list->head_ = NULL;
   list->tail_ = NULL;
-  --list->size_;
+}
+
+static int
+HasOneNode(DoublyLinkedList* list) {
+  return list->head_ != NULL && list->head_ == list->tail_;
 }
 
 DoublyLinkedList*
@@ -51,7 +54,6 @@ DoublyLinkedListNewFull(void (*destructor)(void*)) {
   // check whether list is NULL or not; return NULL if NULL
   HYUNDEOK_MEMORY_ASSERT(list, NULL);
 
-  list->size_ = 0;
   list->destructor_ = destructor;
   list->head_ = NULL;
   list->tail_ = NULL;
@@ -59,14 +61,9 @@ DoublyLinkedListNewFull(void (*destructor)(void*)) {
   return list;
 }
 
-size_t
-DoublyLinkedListSize(DoublyLinkedList* list) {
-  return list->size_;
-}
-
 int
 DoublyLinkedListIsEmpty(DoublyLinkedList* list) {
-  return DoublyLinkedListSize(list) == 0;
+  return list->head_ == NULL;
 }
 
 void*
@@ -88,14 +85,11 @@ DoublyLinkedListPrepend(DoublyLinkedList* list, void* data) {
 
   if (DoublyLinkedListIsEmpty(list)) {
     InitialiseHeadAndTail(list, new_node);
-    return 0;
+  } else {
+    new_node->next_ = list->head_;
+    list->head_->prev_ = new_node;
+    list->head_ = new_node;
   }
-
-  new_node->next_ = list->head_;
-  list->head_->prev_ = new_node;
-  list->head_ = new_node;
-
-  ++list->size_;
 
   return list->head_;
 }
@@ -109,20 +103,55 @@ DoublyLinkedListAppend(DoublyLinkedList* list, void* data) {
 
   if (DoublyLinkedListIsEmpty(list)) {
     InitialiseHeadAndTail(list, new_node);
-    return 0;
+  } else {
+    new_node->prev_ = list->tail_;
+    list->tail_->next_ = new_node;
+    list->tail_ = new_node;
   }
 
-  new_node->prev_ = list->tail_;
-  list->tail_->next_ = new_node;
-  list->tail_ = new_node;
+  return list->tail_;
+}
 
-  ++list->size_;
+DllnT*
+DoublyLinkedListPrependNode(DoublyLinkedList* list, DllnT* node) {
+  if (node == NULL)
+    return NULL;
+
+  node->prev_ = NULL;
+  node->next_ = NULL;
+
+  if (DoublyLinkedListIsEmpty(list)) {
+    InitialiseHeadAndTail(list, node);
+  } else {
+    list->head_->prev_ = node;
+    node->next_ = list->head_;
+    list->head_ = node;
+  }
+
+  return list->head_;
+}
+
+DllnT*
+DoublyLinkedListAppendNode(DoublyLinkedList* list, DllnT* node) {
+  if (node == NULL)
+    return NULL;
+
+  node->prev_ = NULL;
+  node->next_ = NULL;
+
+  if (DoublyLinkedListIsEmpty(list)) {
+    InitialiseHeadAndTail(list, node);
+  } else {
+    list->tail_->next_ = node;
+    node->prev_ = list->tail_;
+    list->tail_ = node;
+  }
 
   return list->tail_;
 }
 
 void
-DoublyLinkedListRemove(DoublyLinkedList* list, DllnT* node) {
+DoublyLinkedListRemove(DoublyLinkedList* list, DllnT* node, int free_node) {
   if (node == NULL)
     return;
 
@@ -135,16 +164,17 @@ DoublyLinkedListRemove(DoublyLinkedList* list, DllnT* node) {
   if (next != NULL)
     next->prev_ = node->prev_;
 
-  FreeDoublyLinkedListNode(node, list->destructor_);
+  if (free_node)
+    FreeDoublyLinkedListNode(node, list->destructor_);
 
-  --list->size_;
-
-  const size_t size = DoublyLinkedListSize(list);
-
-  if (size == 0) {
+  // if there are no elements after removal
+  if (prev == NULL && next == NULL) {
     list->head_ = NULL;
     list->tail_ = NULL;
-  } else if (size == 1) {
+  }
+  // if there is only one element after removal
+  else if (list->head_ != list->tail_ && list->head_ != NULL &&
+           (prev == NULL || next == NULL)) {
     if (prev != NULL)
       list->tail_ = list->head_;
     if (next != NULL)
@@ -157,7 +187,7 @@ DoublyLinkedListRemoveFront(DoublyLinkedList* list) {
   if (DoublyLinkedListIsEmpty(list))
     return;
 
-  if (DoublyLinkedListSize(list) == (unsigned)1) {
+  if (HasOneNode(list)) {
     FreeLastElement(list);
     return;
   }
@@ -166,8 +196,6 @@ DoublyLinkedListRemoveFront(DoublyLinkedList* list) {
   FreeDoublyLinkedListNode(list->head_, list->destructor_);
   tmp->prev_ = NULL;
   list->head_ = tmp;
-
-  --list->size_;
 }
 
 void
@@ -175,7 +203,7 @@ DoublyLinkedListRemoveBack(DoublyLinkedList* list) {
   if (DoublyLinkedListIsEmpty(list))
     return;
 
-  if (DoublyLinkedListSize(list) == (unsigned)1) {
+  if (HasOneNode(list)) {
     FreeLastElement(list);
     return;
   }
@@ -184,8 +212,6 @@ DoublyLinkedListRemoveBack(DoublyLinkedList* list) {
   FreeDoublyLinkedListNode(list->tail_, list->destructor_);
   tmp->next_ = NULL;
   list->tail_ = tmp;
-
-  --list->size_;
 }
 
 void
