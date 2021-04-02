@@ -32,7 +32,7 @@ test_LRUCacheInsert(void** state) {
       CreateString("Herb"),
       CreateString("Scott"),
   };
-  char* lastnamese = {
+  char* lastnames = {
       CreateString("Park"),
       CreateString("Stroutstrup"),
       CreateString("Sutters"),
