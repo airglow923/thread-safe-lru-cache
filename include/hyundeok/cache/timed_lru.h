@@ -30,7 +30,7 @@
  *    DoublyLinkedList<DllnT<KeyType, ValueType, long>> lru_;
  *
  * However, end users will use it as if they are using the hash table of the
- * they provided.
+ * key-value pair they provided.
  */
 typedef struct LRUCache {
   pthread_mutex_t lock_;
