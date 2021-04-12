@@ -8,5 +8,5 @@ Development in progress.
 2. `mkdir build`
 3. `cd build`
 4. `cmake ..`
-5. `make -j $(nproc -all)`
+5. `make -j $(nproc --all)`
 6. Use the shared library.
